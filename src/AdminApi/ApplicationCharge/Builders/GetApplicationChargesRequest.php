@@ -2,38 +2,35 @@
 
 namespace Yaspa\AdminApi\ApplicationCharge\Builders;
 
-use Yaspa\AdminApi\ApplicationCharge\Models\ApplicationCharge as ApplicationChargeModel;
 use Yaspa\Constants\RequestBuilder;
 use Yaspa\Interfaces\RequestBuilderInterface;
 use Yaspa\Traits\AuthorizedRequestBuilderTrait;
 use Yaspa\Traits\ResourceRequestBuilderTrait;
 
 /**
- * Class GetApplicationChargeRequest
+ * Class GetApplicationChargesRequest
  *
  * @package Yaspa\AdminApi\Customer\Builders
- * @see https://help.shopify.com/api/reference/applicationcharge#show
+ * @see https://help.shopify.com/api/reference/applicationcharge#index
  */
-class GetApplicationChargeRequest implements RequestBuilderInterface
+class GetApplicationChargesRequest implements RequestBuilderInterface
 {
     use AuthorizedRequestBuilderTrait,
         ResourceRequestBuilderTrait;
 
     const URI_TEMPLATE = 'https://%s.myshopify.com/admin/application_charges/%s.json';
 
-    /**
-     * Builder properties
-     */
-    /** @var ApplicationChargeModel $ApplicationChargeModel */
-    protected $ApplicationChargeModel;
-    /** @var ApplicationChargeFields $ApplicationChargeFields */
-    protected $ApplicationChargeFields;
+    /** @var int $sinceId */
+    protected $sinceId;
+    /** @var ApplicationChargeFields $applicationChargeFields */
+    protected $applicationChargeFields;
 
     /**
-     * GetApplicationChargeRequest constructor.
+     * GetApplicationChargesRequest constructor.
      */
     public function __construct()
     {
+        // Set properties with defaults
         $this->uriTemplate = self::URI_TEMPLATE;
         $this->httpMethod = RequestBuilder::GET_HTTP_METHOD;
         $this->headers = RequestBuilder::JSON_HEADERS;
@@ -45,7 +42,7 @@ class GetApplicationChargeRequest implements RequestBuilderInterface
      */
     public function toResourceId()
     {
-        return $this->ApplicationChargeModel->getId();
+        return $this->applicationChargeModel->getId();
     }
 
     /**
@@ -55,33 +52,36 @@ class GetApplicationChargeRequest implements RequestBuilderInterface
     {
         $array = [];
 
-        if (!is_null($this->ApplicationChargeFields)) {
-            $array['fields'] = implode(',', $this->ApplicationChargeFields->getFields());
+        if (!is_null($this->sinceId)) {
+            $array['since_id'] = $this->sinceId;
+        }
+
+        if (!is_null($this->applicationChargeFields)) {
+            $array['applicationcharge_fields'] = implode(',', $this->applicationChargeFields->getFields());
         }
 
         return $array;
     }
 
     /**
-     * @param ApplicationChargeModel $ApplicationChargeModel
-     * @return GetApplicationChargeRequest
+     * @param int $sinceId
+     * @return GetApplicationChargesRequest
      */
-    public function withApplicationCharge(ApplicationChargeModel $ApplicationChargeModel): GetApplicationChargeRequest
+    public function withSinceId(int $sinceId): GetApplicationChargesRequest
     {
         $new = clone $this;
-        $new->ApplicationChargeModel = $ApplicationChargeModel;
+        $new->sinceId = $sinceId;
 
         return $new;
     }
-
     /**
-     * @param ApplicationChargeFields $ApplicationChargeFields
-     * @return GetApplicationChargeRequest
+     * @param ApplicationChargeFields $applicationChargeFields
+     * @return GetApplicationChargesRequest
      */
-    public function withApplicationChargeFields(ApplicationChargeFields $ApplicationChargeFields): GetApplicationChargeRequest
+    public function withApplicationChargeFields(ApplicationChargeFields $applicationChargeFields): GetApplicationChargesRequest
     {
         $new = clone $this;
-        $new->ApplicationChargeFields = $ApplicationChargeFields;
+        $new->applicationChargeFields = $applicationChargeFields;
 
         return $new;
     }

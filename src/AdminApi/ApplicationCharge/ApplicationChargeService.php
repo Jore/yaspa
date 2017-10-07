@@ -4,6 +4,7 @@ namespace Yaspa\AdminApi\ApplicationCharge;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
+use Yaspa\AdminApi\ApplicationCharge\Builders\GetApplicationChargeRequest;
 use Yaspa\AdminApi\ApplicationCharge\Builders\GetApplicationChargesRequest;
 use Yaspa\AdminApi\ApplicationCharge\Builders\CreateNewApplicationChargeRequest;
 use Yaspa\AdminApi\ApplicationCharge\Models\ApplicationCharge;
