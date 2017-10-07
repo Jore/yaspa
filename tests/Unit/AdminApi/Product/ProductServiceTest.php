@@ -3,6 +3,7 @@
 namespace Yaspa\Tests\Unit\AdminApi\Product;
 
 use GuzzleHttp\Client;
+use Yaspa\AdminApi\Metafield\Models\Metafield;
 use Yaspa\AdminApi\Product\Builders\CountProductsRequest;
 use Yaspa\AdminApi\Product\Builders\GetProductsRequest;
 use Yaspa\AdminApi\Product\Builders\ModifyExistingProductRequest;
@@ -217,6 +218,39 @@ class ProductServiceTest extends TestCase
         $this->assertEmpty(get_object_vars($result));
     }
 
+    public function testCanCreateNewProductMetafield()
+    {
+        // Create mock client
+        $mockClientUtil = new MockGuzzleClient();
+        $client = $mockClientUtil->makeWithResponses(
+            [
+                $mockClientUtil->makeJsonResponse(200, [
+                    'metafield' => [
+                        'id' => 3,
+                        'key' => 'foo',
+                    ],
+                ]),
+            ]
+        );
+        Factory::inject(Client::class, $client);
+
+        // Create parameters
+        $credentials = Factory::make(ApiCredentials::class)
+            ->makeOAuth('foo', 'bar');
+        $product = (new Product())
+            ->setId(3);
+        $metafield = (new Metafield())
+            ->setNamespace('inventory')
+            ->setKey('warehouse')
+            ->setValue(25)
+            ->setValueType('integer');
+
+        // Test service method
+        $service = Factory::make(ProductService::class);
+        $result = $service->createNewProductMetafield($credentials, $product, $metafield);
+        $this->assertInstanceOf(Metafield::class, $result);
+    }
+
     public function testCanGetProductMetafields()
     {
         // Create mock client
@@ -247,5 +281,67 @@ class ProductServiceTest extends TestCase
         $service = Factory::make(ProductService::class);
         $metafields = $service->getProductMetafields($credentials, 7);
         $this->assertNotEmpty($metafields);
+    }
+
+    public function testCanUpdateProductMetafield()
+    {
+        // Create mock client
+        $mockClientUtil = new MockGuzzleClient();
+        $client = $mockClientUtil->makeWithResponses(
+            [
+                $mockClientUtil->makeJsonResponse(200, [
+                    'metafield' => [
+                        'id' => 3,
+                        'key' => 'foo',
+                    ],
+                ]),
+            ]
+        );
+        Factory::inject(Client::class, $client);
+
+        // Create parameters
+        $credentials = Factory::make(ApiCredentials::class)
+            ->makeOAuth('foo', 'bar');
+        $product = (new Product())
+            ->setId(3);
+        $metafield = (new Metafield())
+            ->setNamespace('inventory')
+            ->setKey('warehouse')
+            ->setValue(25)
+            ->setValueType('integer');
+
+        // Test service method
+        $service = Factory::make(ProductService::class);
+        $result = $service->updateProductMetafield($credentials, $product, $metafield);
+        $this->assertInstanceOf(Metafield::class, $result);
+    }
+
+    public function testCanDeleteProductMetafield()
+    {
+        // Create mock client
+        $mockClientUtil = new MockGuzzleClient();
+        $client = $mockClientUtil->makeWithResponses(
+            [
+                $mockClientUtil->makeEmptyJsonResponse(200),
+            ]
+        );
+        Factory::inject(Client::class, $client);
+
+        // Create parameters
+        $credentials = Factory::make(ApiCredentials::class)
+            ->makeOAuth('foo', 'bar');
+        $product = (new Product())
+            ->setId(3);
+        $metafield = (new Metafield())
+            ->setNamespace('inventory')
+            ->setKey('warehouse')
+            ->setValue(25)
+            ->setValueType('integer');
+
+        // Test service method
+        $service = Factory::make(ProductService::class);
+        $result = $service->deleteProductMetafield($credentials, $product, $metafield);
+        $this->assertTrue(is_object($result));
+        $this->assertEmpty(get_object_vars($result));
     }
 }

@@ -291,6 +291,82 @@ class ProductServiceTest extends TestCase
      * @depends testCanCreateProductWithMetafield
      * @group integration
      * @param Product $product
+     * @return array
+     */
+    public function testCanCreateNewProductMetafield(Product $product)
+    {
+        // Get config
+        $config = new TestConfig();
+        $shop = $config->get('shopifyShop');
+        $privateApp = $config->get('shopifyShopApp');
+
+        // Create parameters
+        $credentials = Factory::make(ApiCredentials::class)
+            ->makePrivate(
+                $shop->myShopifySubdomainName,
+                $privateApp->apiKey,
+                $privateApp->password
+            );
+        $metafield = (new Metafield())
+            ->setNamespace('inventory')
+            ->setKey('warehouse')
+            ->setValue(25)
+            ->setValueType('integer');
+
+        // Test method
+        $service = Factory::make(ProductService::class);
+        $metafield = $service->createNewProductMetafield($credentials, $product, $metafield);
+        $this->assertNotEmpty($metafield->getId());
+        $this->assertNotEmpty($metafield->getKey());
+        $this->assertNotEmpty($metafield->getValue());
+        $this->assertInstanceOf(Metafield::class, $metafield);
+        return [$product, $metafield];
+    }
+
+    /**
+     * @depends testCanCreateNewProductMetafield
+     * @group integration
+     * @param array $newProductMetafield
+     * @return Product
+     */
+    public function testCanUpdateProductMetafield(array $newProductMetafield)
+    {
+        // Destructure dependent parameters
+        /** @var Product $product */
+        /** @var Metafield $metafield */
+        [$product, $metafield] = $newProductMetafield;
+        $this->assertEquals(25, $metafield->getValue());
+
+        // Get config
+        $config = new TestConfig();
+        $shop = $config->get('shopifyShop');
+        $privateApp = $config->get('shopifyShopApp');
+
+        // Create parameters
+        $credentials = Factory::make(ApiCredentials::class)
+            ->makePrivate(
+                $shop->myShopifySubdomainName,
+                $privateApp->apiKey,
+                $privateApp->password
+            );
+
+        // Update metafield
+        $metafield->setValue(27);
+
+        // Test method
+        $service = Factory::make(ProductService::class);
+        $updatedMetafield = $service->updateProductMetafield($credentials, $product, $metafield);
+        $this->assertInstanceOf(Metafield::class, $updatedMetafield);
+        $this->assertEquals($metafield->getId(), $updatedMetafield->getId());
+        $this->assertEquals($metafield->getKey(), $updatedMetafield->getKey());
+        $this->assertEquals($metafield->getValue(), $updatedMetafield->getValue());
+        return $product;
+    }
+
+    /**
+     * @depends testCanUpdateProductMetafield
+     * @group integration
+     * @param Product $product
      */
     public function testCanGetProductMetafields(Product $product)
     {
@@ -307,13 +383,58 @@ class ProductServiceTest extends TestCase
                 $privateApp->password
             );
 
+        // Set expectations
+        $expectedMetafieldValues = [
+            'new' => 'newvalue',
+            'warehouse' => 27,
+        ];
+
         // Test method
         $service = Factory::make(ProductService::class);
         $metafields = $service->getProductMetafields($credentials, $product->getId());
         foreach ($metafields as $metafield) {
             $this->assertNotEmpty($metafield->getId());
+            $this->assertNotEmpty($metafield->getKey());
+            $this->assertNotEmpty($metafield->getValue());
             $this->assertInstanceOf(Metafield::class, $metafield);
+            $expectedValue = $expectedMetafieldValues[$metafield->getKey()];
+            $this->assertEquals($expectedValue, $metafield->getValue());
         }
+    }
+
+    /**
+     * @depends testCanCreateNewProductMetafield
+     * @group integration
+     * @param array $newProductMetafield
+     */
+    public function testCanDeleteProductMetafield(array $newProductMetafield)
+    {
+        // Destructure dependent parameters
+        /** @var Product $product */
+        /** @var Metafield $metafield */
+        [$product, $metafield] = $newProductMetafield;
+
+        // Get config
+        $config = new TestConfig();
+        $shop = $config->get('shopifyShop');
+        $privateApp = $config->get('shopifyShopApp');
+
+        // Create parameters
+        $credentials = Factory::make(ApiCredentials::class)
+            ->makePrivate(
+                $shop->myShopifySubdomainName,
+                $privateApp->apiKey,
+                $privateApp->password
+            );
+
+        // Update metafield
+        $metafield->setValue(27);
+
+        // Test method
+        $service = Factory::make(ProductService::class);
+        $result = $service->deleteProductMetafield($credentials, $product, $metafield);
+        $this->assertTrue(is_object($result));
+        $this->assertEmpty(get_object_vars($result));
     }
 
     /**
