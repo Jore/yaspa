@@ -26,6 +26,8 @@ class GetApplicationChargeRequest implements RequestBuilderInterface
      */
     /** @var ApplicationChargeModel $applicationChargeModel */
     protected $applicationChargeModel;
+    /** @var ApplicationChargeFields $applicationChargeFields */
+    protected $applicationChargeFields;
 
     /**
      * GetApplicationChargeRequest constructor.
@@ -47,6 +49,20 @@ class GetApplicationChargeRequest implements RequestBuilderInterface
     }
 
     /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $array = [];
+
+        if (!is_null($this->applicationChargeFields)) {
+            $array['fields'] = implode(',', $this->applicationChargeFields->getFields());
+        }
+
+        return $array;
+    }
+
+    /**
      * @param ApplicationChargeModel $applicationChargeModel
      * @return GetApplicationChargeRequest
      */
@@ -54,6 +70,18 @@ class GetApplicationChargeRequest implements RequestBuilderInterface
     {
         $new = clone $this;
         $new->applicationChargeModel = $applicationChargeModel;
+
+        return $new;
+    }
+
+    /**
+     * @param ApplicationChargeFields $applicationChargeFields
+     * @return GetApplicationChargeRequest
+     */
+    public function withApplicationChargeFields(ApplicationChargeFields $applicationChargeFields): GetApplicationChargeRequest
+    {
+        $new = clone $this;
+        $new->applicationChargeFields = $applicationChargeFields;
 
         return $new;
     }

@@ -10,17 +10,17 @@ use Yaspa\Traits\AuthorizedRequestBuilderTrait;
 use Yaspa\Traits\ResourceRequestBuilderTrait;
 
 /**
- * Class CreateNewApplicationChargeRequest
+ * Class ActivateApplicationChargeRequest
  *
  * @package Yaspa\AdminApi\ApplicationCharge\Builders
- * @see https://help.shopify.com/api/reference/applicationcharge#create
+ * @see https://help.shopify.com/api/reference/applicationcharge#activate
  */
-class CreateNewApplicationChargeRequest implements RequestBuilderInterface
+class ActivateApplicationChargeRequest implements RequestBuilderInterface
 {
     use AuthorizedRequestBuilderTrait,
         ResourceRequestBuilderTrait;
 
-    const URI_TEMPLATE = 'https://%s.myshopify.com/admin/application_charges.json';
+    const URI_TEMPLATE = 'https://%s.myshopify.com/admin/application_charges/%s/activate.json';
 
     /**
      * Builder properties
@@ -31,7 +31,7 @@ class CreateNewApplicationChargeRequest implements RequestBuilderInterface
     protected $applicationChargeTransformer;
 
     /**
-     * CreateNewApplicationChargeRequest constructor.
+     * ActivateApplicationChargeRequest constructor.
      *
      * @param ApplicationChargeTransformer $applicationChargeTransformer
      */
@@ -54,9 +54,9 @@ class CreateNewApplicationChargeRequest implements RequestBuilderInterface
 
     /**
      * @param ApplicationChargeModel $applicationChargeModel
-     * @return CreateNewApplicationChargeRequest
+     * @return ActivateApplicationChargeRequest
      */
-    public function withApplicationCharge(ApplicationChargeModel $applicationChargeModel): CreateNewApplicationChargeRequest
+    public function withApplicationCharge(ApplicationChargeModel $applicationChargeModel): ActivateApplicationChargeRequest
     {
         $new = clone $this;
         $new->applicationChargeModel = $applicationChargeModel;

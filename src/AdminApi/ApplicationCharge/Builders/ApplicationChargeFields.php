@@ -8,7 +8,7 @@ namespace Yaspa\AdminApi\ApplicationCharge\Builders;
  * @package Yaspa\AdminApi\ApplicationCharge\Builders
  * @see https://help.shopify.com/api/reference/applicationcharge#show
  *
- * Field builder for use with requests such as get customers.
+ * Possible fields to be included with return data resulting from a application charges call.
  */
 class ApplicationChargeFields
 {
@@ -26,7 +26,7 @@ class ApplicationChargeFields
     protected $fields;
 
     /**
-     * CustomerFields constructor.
+     * ApplicationChargeFields constructor.
      */
     public function __construct()
     {
@@ -42,9 +42,9 @@ class ApplicationChargeFields
     }
 
     /**
-     * @return CustomerFields
+     * @return ApplicationChargeFields
      */
-    public function withId(): CustomerFields
+    public function withId(): ApplicationChargeFields
     {
         $new = clone $this;
         $new->fields[] = self::ID;
@@ -53,9 +53,75 @@ class ApplicationChargeFields
     }
 
     /**
-     * @return CustomerFields
+     * @return ApplicationChargeFields
      */
-    public function withCreatedAt(): CustomerFields
+    public function withConfirmationUrl(): ApplicationChargeFields
+    {
+        $new = clone $this;
+        $new->fields[] = self::CONFIRMATION_URL;
+
+        return $new;
+    }
+
+    /**
+     * @return ApplicationChargeFields
+     */
+    public function withName(): ApplicationChargeFields
+    {
+        $new = clone $this;
+        $new->fields[] = self::NAME;
+
+        return $new;
+    }
+
+    /**
+     * @return ApplicationChargeFields
+     */
+    public function withPrice(): ApplicationChargeFields
+    {
+        $new = clone $this;
+        $new->fields[] = self::PRICE;
+
+        return $new;
+    }
+
+    /**
+     * @return ApplicationChargeFields
+     */
+    public function withStatus(): ApplicationChargeFields
+    {
+        $new = clone $this;
+        $new->fields[] = self::STATUS;
+
+        return $new;
+    }
+
+    /**
+     * @return ApplicationChargeFields
+     */
+    public function withReturnUrl(): ApplicationChargeFields
+    {
+        $new = clone $this;
+        $new->fields[] = self::RETURN_URL;
+
+        return $new;
+    }
+
+    /**
+     * @return ApplicationChargeFields
+     */
+    public function withTest(): ApplicationChargeFields
+    {
+        $new = clone $this;
+        $new->fields[] = self::TEST;
+
+        return $new;
+    }
+
+    /**
+     * @return ApplicationChargeFields
+     */
+    public function withCreatedAt(): ApplicationChargeFields
     {
         $new = clone $this;
         $new->fields[] = self::CREATED_AT;
@@ -64,9 +130,9 @@ class ApplicationChargeFields
     }
 
     /**
-     * @return CustomerFields
+     * @return ApplicationChargeFields
      */
-    public function withUpdatedAt(): CustomerFields
+    public function withUpdatedAt(): ApplicationChargeFields
     {
         $new = clone $this;
         $new->fields[] = self::UPDATED_AT;

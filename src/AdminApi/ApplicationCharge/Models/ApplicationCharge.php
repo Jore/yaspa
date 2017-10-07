@@ -8,7 +8,7 @@ use DateTime;
  * Class ApplicationCharge
  *
  * @package Yaspa\AdminApi\ApplicationCharge\Models
- * @see https://help.shopify.com/api/reference/ApplicationCharge#show
+ * @see https://help.shopify.com/api/reference/application_charges#show
  */
 class ApplicationCharge
 {

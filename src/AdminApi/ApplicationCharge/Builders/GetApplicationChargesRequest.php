@@ -57,7 +57,7 @@ class GetApplicationChargesRequest implements RequestBuilderInterface
         }
 
         if (!is_null($this->applicationChargeFields)) {
-            $array['applicationcharge_fields'] = implode(',', $this->applicationChargeFields->getFields());
+            $array['fields'] = implode(',', $this->applicationChargeFields->getFields());
         }
 
         return $array;

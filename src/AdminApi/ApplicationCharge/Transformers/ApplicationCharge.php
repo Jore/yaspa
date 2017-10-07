@@ -40,7 +40,7 @@ class ApplicationCharge implements ArrayResponseTransformerInterface
             throw new MissingExpectedAttributeException('ApplicationCharges');
         }
 
-        return array_map([$this, 'fromShopifyJsonApplicationCharge'], $stdClass->ApplicationCharges);
+        return array_map([$this, 'fromShopifyJsonApplicationCharge'], $stdClass->applicationCharges);
     }
 
 
@@ -50,75 +50,70 @@ class ApplicationCharge implements ArrayResponseTransformerInterface
      */
     public function fromShopifyJsonApplicationCharge(stdClass $shopifyJsonApplicationCharge): ApplicationChargeModel
     {
-        $ApplicationCharge = new ApplicationChargeModel();
+        $applicationCharge = new ApplicationChargeModel();
 
         if (property_exists($shopifyJsonApplicationCharge, 'id')) {
-            $ApplicationCharge->setId($shopifyJsonApplicationCharge->id);
+            $applicationCharge->setId($shopifyJsonApplicationCharge->id);
         }
 
-        if (property_exists($shopifyJsonApplicationCharge, 'namespace')) {
-            $ApplicationCharge->setNamespace($shopifyJsonApplicationCharge->namespace);
+        if (property_exists($shopifyJsonApplicationCharge, 'confirmation_url')) {
+            $applicationCharge->setConfirmationUrl($shopifyJsonApplicationCharge->confirmation_url);
         }
 
-        if (property_exists($shopifyJsonApplicationCharge, 'key')) {
-            $ApplicationCharge->setKey($shopifyJsonApplicationCharge->key);
+        if (property_exists($shopifyJsonApplicationCharge, 'name')) {
+            $applicationCharge->setName($shopifyJsonApplicationCharge->name);
         }
 
-        if (property_exists($shopifyJsonApplicationCharge, 'value')) {
-            $ApplicationCharge->setValue($shopifyJsonApplicationCharge->value);
+        if (property_exists($shopifyJsonApplicationCharge, 'price')) {
+            $applicationCharge->setPrice($shopifyJsonApplicationCharge->price);
         }
 
-        if (property_exists($shopifyJsonApplicationCharge, 'value_type')) {
-            $ApplicationCharge->setValueType($shopifyJsonApplicationCharge->value_type);
+        if (property_exists($shopifyJsonApplicationCharge, 'return_url')) {
+            $applicationCharge->setReturnUrl($shopifyJsonApplicationCharge->return_url);
         }
 
-        if (property_exists($shopifyJsonApplicationCharge, 'description')) {
-            $ApplicationCharge->setDescription($shopifyJsonApplicationCharge->description);
+        if (property_exists($shopifyJsonApplicationCharge, 'status')) {
+            $applicationCharge->setStatus($shopifyJsonApplicationCharge->status);
         }
 
-        if (property_exists($shopifyJsonApplicationCharge, 'owner_id')) {
-            $ApplicationCharge->setOwnerId($shopifyJsonApplicationCharge->owner_id);
+        if (property_exists($shopifyJsonApplicationCharge, 'test')) {
+            $applicationCharge->setTest($shopifyJsonApplicationCharge->test);
         }
 
         if (property_exists($shopifyJsonApplicationCharge, 'created_at')
             && !empty($shopifyJsonApplicationCharge->created_at)
         ) {
             $createdAt = new DateTime($shopifyJsonApplicationCharge->created_at);
-            $ApplicationCharge->setCreatedAt($createdAt);
+            $applicationCharge->setCreatedAt($createdAt);
         }
 
         if (property_exists($shopifyJsonApplicationCharge, 'updated_at')
             && !empty($shopifyJsonApplicationCharge->updated_at)
         ) {
             $updatedAt = new DateTime($shopifyJsonApplicationCharge->updated_at);
-            $ApplicationCharge->setUpdatedAt($updatedAt);
+            $applicationCharge->setUpdatedAt($updatedAt);
         }
 
-        if (property_exists($shopifyJsonApplicationCharge, 'owner_resource')) {
-            $ApplicationCharge->setOwnerResource($shopifyJsonApplicationCharge->owner_resource);
-        }
-
-        return $ApplicationCharge;
+        return $applicationCharge;
     }
 
     /**
-     * @param ApplicationChargeModel $ApplicationCharge
+     * @param ApplicationChargeModel $applicationCharge
      * @return array
      */
-    public function toArray(ApplicationChargeModel $ApplicationCharge): array
+    public function toArray(ApplicationChargeModel $applicationCharge): array
     {
         $array = [];
 
-        $array['id'] = $ApplicationCharge->getId();
-        $array['namespace'] = $ApplicationCharge->getNamespace();
-        $array['key'] = $ApplicationCharge->getKey();
-        $array['value'] = $ApplicationCharge->getValue();
-        $array['value_type'] = $ApplicationCharge->getValueType();
-        $array['description'] = $ApplicationCharge->getDescription();
-        $array['owner_id'] = $ApplicationCharge->getOwnerId();
-        $array['created_at'] = ($ApplicationCharge->getCreatedAt()) ? $ApplicationCharge->getCreatedAt()->format(DateTime::ISO8601) : null;
-        $array['updated_at'] = ($ApplicationCharge->getUpdatedAt()) ? $ApplicationCharge->getUpdatedAt()->format(DateTime::ISO8601) : null;
-        $array['owner_resource'] = $ApplicationCharge->getOwnerResource();
+        $array['id'] = $applicationCharge->getId();
+        $array['confirmation_url'] = $applicationCharge->getConfirmationUrl();
+        $array['name'] = $applicationCharge->getName();
+        $array['price'] = $applicationCharge->getPrice();
+        $array['return_url'] = $applicationCharge->getReturnUrl();
+        $array['status'] = $applicationCharge->getStatus();
+        $array['test'] = $applicationCharge->getTest();
+        $array['created_at'] = ($applicationCharge->getCreatedAt()) ? $applicationCharge->getCreatedAt()->format(DateTime::ISO8601) : null;
+        $array['updated_at'] = ($applicationCharge->getUpdatedAt()) ? $applicationCharge->getUpdatedAt()->format(DateTime::ISO8601) : null;
 
         return $array;
     }

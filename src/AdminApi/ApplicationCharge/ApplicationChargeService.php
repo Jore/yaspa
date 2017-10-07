@@ -30,7 +30,7 @@ class ApplicationChargeService
      * ApplicationChargeService constructor.
      *
      * @param Client $httpClient
-     * @param Transformers\ApplicationCharge $ApplicationChargeTransformer
+     * @param Transformers\ApplicationCharge $applicationChargeTransformer
      * @param CreateNewApplicationChargeRequest $createNewApplicationChargeRequestBuilder
      */
     public function __construct(
